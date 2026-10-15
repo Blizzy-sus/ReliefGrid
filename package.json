@@ -1,0 +1,23 @@
+{
+  "name": "reliefgrid",
+  "version": "1.0.0",
+  "description": "ReliefGrid - disaster relief resource allocation system",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "migrate": "node --disable-warning=ExperimentalWarning server/migrate.js",
+    "seed": "node --disable-warning=ExperimentalWarning server/seed.js",
+    "start": "node --disable-warning=ExperimentalWarning server/index.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch server/index.js",
+    "setup": "npm run seed",
+    "test": "node --disable-warning=ExperimentalWarning --test --test-reporter=spec \"tests/*.test.js\"",
+    "scenarios": "node --disable-warning=ExperimentalWarning scripts/scenarios.js",
+    "queries": "node --disable-warning=ExperimentalWarning scripts/run-queries.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

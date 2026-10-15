@@ -1,0 +1,195 @@
+erDiagram
+  allocation_decisions {
+    integer id PK
+    integer run_id FK
+    integer request_item_id FK
+    integer camp_id FK
+    integer item_id FK
+    integer approved_qty
+    integer prior_qty
+    integer need_qty
+    real priority_score
+    integer allocated_qty
+  }
+  allocation_lines {
+    integer id PK
+    integer decision_id FK
+    integer shipment_id FK
+    integer warehouse_id FK
+    integer quantity
+    real distance_km
+  }
+  allocation_runs {
+    integer id PK
+    integer run_by FK
+    integer disaster_id FK
+    text created_at
+    integer units_allocated
+  }
+  allocation_settings {
+    text key PK
+    real value
+  }
+  audit_log {
+    integer id PK
+    integer user_id FK
+    text action
+    text created_at
+  }
+  camp_stock {
+    integer camp_id PK,FK
+    integer item_id PK,FK
+    integer quantity
+  }
+  camps {
+    integer id PK
+    integer disaster_id FK
+    text name
+    integer capacity
+    integer population
+    integer vulnerable_count
+    text status
+  }
+  disasters {
+    integer id PK
+    text name
+    text type
+    text status
+  }
+  distributions {
+    integer id PK
+    integer camp_id FK
+    integer item_id FK
+    integer distributed_by FK
+    integer quantity
+    integer people_served
+  }
+  inventory {
+    integer warehouse_id PK,FK
+    integer item_id PK,FK
+    integer quantity_on_hand
+    integer quantity_reserved
+    integer reorder_level
+  }
+  request_items {
+    integer id PK
+    integer request_id FK
+    integer item_id FK
+    integer quantity_requested
+    integer quantity_approved
+    integer quantity_allocated
+    integer quantity_delivered
+  }
+  requests {
+    integer id PK
+    integer camp_id FK
+    integer requested_by FK
+    integer urgency FK
+    text status
+    text created_at
+  }
+  sessions {
+    text token_hash PK
+    integer user_id FK
+    text expires_at
+  }
+  shipment_events {
+    integer id PK
+    integer shipment_id FK
+    integer actor_id FK
+    text status
+    text created_at
+  }
+  shipment_items {
+    integer id PK
+    integer shipment_id FK
+    integer request_item_id FK
+    integer item_id FK
+    integer quantity
+    integer quantity_received
+  }
+  shipments {
+    integer id PK
+    integer run_id FK
+    integer warehouse_id FK
+    integer camp_id FK
+    integer volunteer_id FK
+    integer last_actor_id FK
+    text code
+    text status
+    real distance_km
+  }
+  stock_movements {
+    integer id PK
+    integer warehouse_id FK
+    integer item_id FK
+    integer user_id FK
+    text movement_type
+    integer delta_on_hand
+    integer delta_reserved
+  }
+  supply_categories {
+    integer id PK
+    text name
+  }
+  supply_items {
+    integer id PK
+    integer category_id FK
+    text name
+    text unit
+    real standard_per_person_per_day
+  }
+  urgency_levels {
+    integer level PK
+    text label
+    real weight
+    integer sla_hours
+  }
+  users {
+    integer id PK
+    integer camp_id FK
+    integer warehouse_id FK
+    text username
+    text role
+  }
+  warehouses {
+    integer id PK
+    text name
+    real latitude
+    real longitude
+    text status
+  }
+  supply_items ||--o{ allocation_decisions : "item_id"
+  camps ||--o{ allocation_decisions : "camp_id"
+  request_items ||--o{ allocation_decisions : "request_item_id"
+  allocation_runs ||--o{ allocation_decisions : "run_id"
+  warehouses ||--o{ allocation_lines : "warehouse_id"
+  shipments ||--o{ allocation_lines : "shipment_id"
+  allocation_decisions ||--o{ allocation_lines : "decision_id"
+  disasters |o--o{ allocation_runs : "disaster_id"
+  supply_items ||--o{ camp_stock : "item_id"
+  camps ||--o{ camp_stock : "camp_id"
+  disasters ||--o{ camps : "disaster_id"
+  camp_stock ||--o{ distributions : "camp_id"
+  camp_stock ||--o{ distributions : "item_id"
+  supply_items ||--o{ inventory : "item_id"
+  warehouses ||--o{ inventory : "warehouse_id"
+  supply_items ||--o{ request_items : "item_id"
+  requests ||--o{ request_items : "request_id"
+  urgency_levels ||--o{ requests : "urgency"
+  users ||--o{ requests : "requested_by"
+  camps ||--o{ requests : "camp_id"
+  users ||--o{ sessions : "user_id"
+  shipments ||--o{ shipment_events : "shipment_id"
+  supply_items ||--o{ shipment_items : "item_id"
+  request_items ||--o{ shipment_items : "request_item_id"
+  shipments ||--o{ shipment_items : "shipment_id"
+  users |o--o{ shipments : "volunteer_id"
+  camps ||--o{ shipments : "camp_id"
+  warehouses ||--o{ shipments : "warehouse_id"
+  allocation_runs |o--o{ shipments : "run_id"
+  inventory ||--o{ stock_movements : "warehouse_id"
+  inventory ||--o{ stock_movements : "item_id"
+  supply_categories ||--o{ supply_items : "category_id"
+  warehouses |o--o{ users : "warehouse_id"
+  camps |o--o{ users : "camp_id"
