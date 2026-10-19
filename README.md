@@ -21,6 +21,8 @@ npm run seed      # creates data/reliefgrid.db with the demo incident (replaces 
 npm start         # http://localhost:3000
 ```
 
+On Windows you can instead **double-click `start-reliefgrid.bat`**: it installs dependencies and loads the demo data on first run, starts the server and opens the browser.
+
 Then open <http://localhost:3000>. The sign-in page offers one-click demo accounts. Every demo account uses the password `ReliefGrid@2026`.
 
 | Account | Role | Scope |
@@ -75,6 +77,7 @@ Environment variables: `PORT` (default 3000), `RELIEFGRID_DB` (database file, de
 | [docs/RESULTS.md](docs/RESULTS.md) | generated scenario results and baseline comparisons |
 | [docs/TESTING.md](docs/TESTING.md) | what is tested, how, results, and what is not covered |
 | [docs/DEMO.md](docs/DEMO.md) | a ten-minute demonstration script |
+| [mysql/](mysql/README.md) | the whole database rebuilt for MySQL Workbench (tables, views, triggers, demo data, queries) |
 | [report/](report/README.md) | the project report (PDF and editable DOCX) with its build scripts |
 
 ## Project layout
